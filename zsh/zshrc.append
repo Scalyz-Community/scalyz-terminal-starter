@@ -1,0 +1,29 @@
+# Branding & UX
+export COLORTERM=truecolor
+# Greeting
+print -P "%F{#407EC9}scalyz.com • Validate skills. Build confidence. Deliver impact • %n@%m%f"
+
+# Oh My Zsh (assumes installer set $ZSH)
+plugins=(git z sudo fzf colored-man-pages history-substring-search)
+# Optional: zsh-autosuggestions zsh-syntax-highlighting
+
+# History
+HISTSIZE=200000
+SAVEHIST=200000
+setopt SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_VERIFY
+
+# Safer defaults
+set -o noclobber
+set -o pipefail
+alias rm='rm -I'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# QoL aliases
+alias ll='ls -lah'
+alias grep='grep --color=auto'
+
+# Kubernetes helpers (if installed)
+alias k='kubectl'
+alias kctx='kubectx'
+alias kns='kubens'
