@@ -13,6 +13,7 @@ need_cmd() { command -v "$1" >/dev/null 2>&1 || return 1; }
 
 OS="$(uname -s)"
 PKG=""
+
 install_pkgs() {
   case "$OS" in
     Darwin)
@@ -30,13 +31,13 @@ install_pkgs() {
       case "$PKG" in
         apt|apt-get)
           sudo $PKG update -y
-          sudo $PKG install -y zsh tmux git curl ca-certificates ripgrep fzf jq xclip || true
+          sudo $PKG install -y zsh tmux git curl ca-certificates ripgrep fzf jq xclip procps || true
           ;;
         dnf|yum)
-          sudo $PKG install -y zsh tmux git curl ripgrep fzf jq xclip || true
+          sudo $PKG install -y zsh tmux git curl ripgrep fzf jq xclip procps-ng || true
           ;;
         apk)
-          sudo $PKG add --no-cache zsh tmux git curl ripgrep fzf jq xclip || true
+          sudo $PKG add --no-cache zsh tmux git curl ripgrep fzf jq xclip procps || true
           ;;
         *)
           warn "Unknown package manager. Please install zsh tmux git curl manually."
@@ -48,7 +49,8 @@ install_pkgs() {
 }
 
 backup() {
-  local f="$1"; [[ -f "$f" ]] && cp "$f" "$f.bak" && info "Backed up $f to $f.bak" || true
+  local f="$1"
+  [[ -f "$f" ]] && cp "$f" "$f.bak" && info "Backed up $f to $f.bak" || true
 }
 
 write_tmux() {
@@ -61,8 +63,9 @@ install_ohmyzsh() {
   if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
     info "Installing Oh My Zsh (unattended)"
     RUNZSH=no CHSH=no KEEP_ZSHRC=yes \
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || {
-      err "Oh My Zsh install failed"; exit 1; }
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || {
+      err "Oh My Zsh install failed"; exit 1;
+    }
   else
     info "Oh My Zsh already present"
   fi
